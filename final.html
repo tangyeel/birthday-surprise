@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For Ishika ✨</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Dancing+Script:wght@700&family=Birthstone+Bounce:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --rose: #ff758c;
+            --text: #4a0e0e;
+        }
+
+        /* Hide standard cursor so our custom trail looks better */
+        * { box-sizing: border-box; cursor: none; }
+
+        body {
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh;
+            /* Animated animated gradient background */
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #feb47b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden; text-align: center;
+            /* Ensure clicks register on the body */
+            min-height: 100vh;
+            width: 100vw;
+        }
+
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* Glassmorphism Container Style */
+        #container {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 2.5rem 1.5rem; border-radius: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+            width: 92%; max-width: 420px; z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        h1 { color: var(--primary); font-family: 'Dancing Script', cursive; font-size: 2.6rem; margin-top: 0; }
+        .countdown-timer { font-size: 2.5rem; font-weight: 700; color: var(--primary); margin: 20px 0; letter-spacing: 2px; }
+        
+        .btn-container { margin-top: 2rem; display: flex; justify-content: center; gap: 15px; position: relative; height: 65px; align-items: center; }
+        
+        button { 
+            padding: 14px 30px; border: none; border-radius: 35px; 
+            font-weight: 700; font-size: 1rem; transition: 0.3s;
+            font-family: 'Quicksand', sans-serif;
+            box-shadow: 0 4px 15px rgba(255,77,109,0.2);
+            cursor: none; /* Ensure buttons don't show hand cursor */
+        }
+
+        .main-btn { background: linear-gradient(45deg, #ff4d6d, #ff85a1); color: white; }
+        .main-btn:active { transform: scale(0.95); }
+        
+        #noBtn { background: rgba(255,255,255,0.9); color: var(--primary); border: 1px solid var(--primary); position: absolute; transition: 0.1s ease; z-index: 100; }
+
+        .hidden { display: none !important; }
+        
+        .cake { font-size: 110px; transition: transform 0.2s; margin: 20px 0; display: inline-block; filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1)); user-select: none; }
+        
+        /* Final Message Styling */
+        .message-card { 
+            background: rgba(255, 255, 255, 0.3); padding: 20px; border-radius: 25px; 
+            text-align: left; margin: 20px 0; border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .wish-item { margin: 15px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 12px; color: var(--text); font-weight: 600; line-height: 1.4; }
+        
+        /* Elegant Signature Font */
+        .signature { 
+            font-family: 'Birthstone Bounce', cursive; 
+            font-size: 4.5rem; color: var(--primary); margin: 0; padding: 0; line-height: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* --- Animations & Effects --- */
+        
+        /* 1. The Elegant Heart Trail following cursor */
+        .trail-heart {
+            position: fixed; pointer-events: none; z-index: 9999;
+            font-size: 20px; color: var(--primary);
+            animation: elegantFade 1s ease-out forwards;
+            filter: drop-shadow(0 0 5px white);
+        }
+        @keyframes elegantFade {
+            0% { transform: translate(-50%, -50%) scale(0.5) rotate(0deg); opacity: 0.8; }
+            100% { transform: translate(-50%, -100%) scale(1.2) rotate(20deg); opacity: 0; }
+        }
+
+        /* 2. Background rising hearts */
+        .floating-heart { position: absolute; pointer-events: none; z-index: 1; animation: floatUp linear infinite; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(0deg); opacity: 0.6; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body onclick="globalConfetti(event)">
+
+    <div id="container">
+        <div id="page0">
+            <h1>Hi Ishika! ✨</h1>
+            <p>You're early !! 😇<br>starts in...</p>
+            <div id="timer" class="countdown-timer">00:00:00</div>
+            <p style="font-size: 0.9rem; opacity: 0.8;">Just a moment...</p>
+        </div>
+
+        <div id="page1" class="hidden">
+            <h1>Hey Ishika... ✨</h1>
+            <p>I built this tiny corner of the internet for you. <br>Ready to enter?</p>
+            <div class="btn-container">
+                <button class="main-btn" onclick="showPage(2)">Yes, I'm ready! ❤️</button>
+                <button id="noBtn" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+            </div>
+        </div>
+
+        <div id="page2" class="hidden">
+            <h1>Make a Wish! 🕯️</h1>
+            <p>Tap your cake <span id="clickCount" style="color:var(--primary); font-weight: bold;">3</span> times to unlock your wishes!</p>
+            <div class="cake" id="cake" onclick="handleCakeClick(event)">🎂</div>
+        </div>
+
+        <div id="page3" class="hidden">
+            <h1 style="font-size: 2.2rem;">Happy Birthday, <br>Ishika! 🥳</h1>
+            <div class="message-card">
+                <div class="wish-item">✨ <span>May your skin always glow just like this!</span></div>
+                <div class="wish-item">🫦 <span>May you have a never-ending supply of YSL 🧴</span></div>
+                <div class="wish-item">🚫 <span>And may all your exes stay far, far away from you!</span></div>
+            </div>
+            <p style="margin-bottom: 0; font-style: italic; opacity: 0.8;">With love,</p>
+            <div class="signature">Aditya</div>
+            <button class="main-btn" onclick="celebrateFinal()" style="margin-top: 15px; font-size: 0.8rem;">More Confetti! 🎉</button>
+        </div>
+    </div>
+
+    <script>
+        // ================= CONFIGURATION =================
+        const birthdayDate = new Date("December 27, 2025 00:00:00").getTime();
+        let cakeClicks = 3;
+
+        // ================= INTERACTIVE EFFECTS =================
+
+        // 1. Global Confetti on Click (Tap anywhere)
+        function globalConfetti(e) {
+            // Normalize coordinates for the confetti library (0 to 1 range)
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            confetti({
+                particleCount: 15,
+                spread: 30,
+                origin: { x: x, y: y },
+                colors: ['#ff4d6d', '#ff85a1', '#ffffff'],
+                disableForReducedMotion: true,
+                gravity: 1.2,
+                ticks: 100
+            });
+        }
+
+        // 2. Elegant Heart Trail (Follows cursor/finger)
+        document.addEventListener('mousemove', (e) => { spawnTrail(e.clientX, e.clientY); });
+        document.addEventListener('touchmove', (e) => { spawnTrail(e.touches[0].clientX, e.touches[0].clientY); });
+
+        function spawnTrail(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'trail-heart';
+            // Randomly pick one of these cute emojis for the trail
+            heart.innerHTML = ['❤️', '✨', '🌸'][Math.floor(Math.random()*3)];
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            document.body.appendChild(heart);
+            // Remove the element after animation finishes to prevent lag
+            setTimeout(() => heart.remove(), 1000);
+        }
+
+        // ================= APP LOGIC =================
+
+        // Countdown Timer Logic
+        const timer = setInterval(() => {
+            const now = new Date().getTime();
+            const diff = birthdayDate - now;
+            if (diff <= 0) {
+                clearInterval(timer);
+                // If date has passed, show the invitation immediately
+                if(!document.getElementById('page0').classList.contains('hidden')){
+                     showPage(1);
+                }
+            } else {
+                const h = Math.floor((diff / (1000 * 60 * 60)));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById("timer").innerText = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+            }
+        }, 1000);
+
+        // Page Navigation Helper
+        function showPage(pageNum) {
+            document.querySelectorAll('#container > div').forEach(div => div.classList.add('hidden'));
+            document.getElementById('page' + pageNum).classList.remove('hidden');
+            
+            // If entering final page, trigger big celebration and background hearts
+            if(pageNum === 3) {
+                setTimeout(celebrateFinal, 500);
+                setInterval(spawnFloatingHeart, 400);
+            }
+        }
+
+        // Runaway "No" Button
+        function moveNoButton() {
+            const btn = document.getElementById('noBtn');
+            // Ensure it stays within the viewport
+            const newX = Math.random() * (window.innerWidth - btn.offsetWidth - 50);
+            const newY = Math.random() * (window.innerHeight - btn.offsetHeight - 50);
+            btn.style.position = 'fixed';
+            btn.style.left = Math.max(20, newX) + 'px';
+            btn.style.top = Math.max(20, newY) + 'px';
+        }
+
+        // Cake Click Handler
+        function handleCakeClick(e) {
+            // Stop propagation so the global confetti doesn't fire twice on cake click
+            e.stopPropagation(); 
+            
+            cakeClicks--;
+            document.getElementById('clickCount').innerText = cakeClicks;
+            
+            const cake = document.getElementById('cake');
+            // click animation
+            cake.style.transform = 'scale(1.3) rotate(5deg)';
+            setTimeout(() => cake.style.transform = 'scale(1) rotate(0deg)', 100);
+            
+            // Bigger confetti burst specifically for the cake
+            confetti({ 
+                particleCount: 30, spread: 50, 
+                origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight } 
+            });
+
+            if (cakeClicks <= 0) showPage(3);
+        }
+
+        // Final Page Big Celebration
+        function celebrateFinal() {
+            const count = 200;
+            const defaults = { origin: { y: 0.7 } };
+            function fire(particleRatio, opts) { confetti({ ...defaults, ...opts, particleCount: Math.floor(count * particleRatio) }); }
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+        }
+
+        // Background Floating Hearts
+        function spawnFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
